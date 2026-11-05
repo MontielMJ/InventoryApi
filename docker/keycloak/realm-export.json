@@ -1,0 +1,109 @@
+{
+  "realm": "inventory",
+  "enabled": true,
+  "displayName": "Inventory API",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "roles": {
+    "realm": [
+      {
+        "name": "inventory-admin",
+        "description": "Can manage inventory"
+      },
+      {
+        "name": "inventory-reader",
+        "description": "Can read inventory"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "inventory-admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Inventory",
+      "lastName": "Admin",
+      "email": "admin@inventory.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "inventory-admin"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "inventory-api",
+      "name": "Inventory API",
+      "description": "Service account client for machine to machine access",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "inventory-api-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "protocolMappers": [
+        {
+          "name": "inventory-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "inventory-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "inventory-swagger",
+      "name": "Inventory Swagger UI",
+      "description": "Public client used by the Swagger UI authorization code flow",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8081/swagger/oauth2-redirect.html"
+      ],
+      "webOrigins": [
+        "http://localhost:8081"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "protocolMappers": [
+        {
+          "name": "inventory-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "inventory-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ]
+}
