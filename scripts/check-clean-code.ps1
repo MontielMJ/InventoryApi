@@ -3,7 +3,7 @@ param(
 )
 $violations = New-Object System.Collections.Generic.List[string]
 $files = Get-ChildItem -Path $Path -Recurse -Filter *.cs |
-    Where-Object { $_.FullName -notmatch '\\(bin|obj|Migrations)\\' }
+    Where-Object { $_.FullName -notmatch '[\\/](bin|obj|Migrations)[\\/]' }
 foreach ($file in $files) {
     $relativePath = $file.FullName.Substring((Get-Location).Path.Length + 1)
     $lines = Get-Content -LiteralPath $file.FullName -Encoding UTF8
