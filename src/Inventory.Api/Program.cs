@@ -15,6 +15,7 @@ builder.Services.AddSwaggerDocumentation(builder.Configuration);
 builder.Services.AddHealthChecks();
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseCors("Frontend");
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
