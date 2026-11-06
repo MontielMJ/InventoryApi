@@ -8,3 +8,5 @@ obj/
 TestResults/
 coverage/
 *.md
+frontend/node_modules/
+frontend/dist/

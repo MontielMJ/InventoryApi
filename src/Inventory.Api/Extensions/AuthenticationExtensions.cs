@@ -27,6 +27,10 @@ public static class AuthenticationExtensions
                 };
             });
         services.AddAuthorization();
+        services.AddCors(options => options.AddPolicy("Frontend", policy => policy
+            .WithOrigins(configuration["Frontend:Origin"] ?? "http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()));
         return services;
     }
     private static string Require(IConfiguration configuration, string key)

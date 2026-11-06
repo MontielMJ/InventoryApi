@@ -21,3 +21,21 @@ jobs:
       - name: Clean code checks
         shell: pwsh
         run: ./scripts/check-clean-code.ps1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Frontend install
+        working-directory: frontend
+        run: npm ci
+      - name: Frontend lint
+        working-directory: frontend
+        run: npm run lint
+      - name: Frontend test
+        working-directory: frontend
+        run: npm run test
+      - name: Frontend build
+        working-directory: frontend
+        run: npm run build

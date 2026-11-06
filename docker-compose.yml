@@ -44,12 +44,22 @@ services:
       Swagger__ClientId: "inventory-swagger"
       Swagger__AuthorizationUrl: "http://localhost:8080/realms/inventory/protocol/openid-connect/auth"
       Swagger__TokenUrl: "http://localhost:8080/realms/inventory/protocol/openid-connect/token"
+      Frontend__Origin: "http://localhost:5173"
     ports:
       - "8081:8080"
     depends_on:
       sqlserver:
         condition: service_healthy
       keycloak:
+        condition: service_started
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
         condition: service_started
 volumes:
   sqlserver-data:

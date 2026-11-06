@@ -35,6 +35,7 @@ Key characteristics:
 - Swagger UI with the OAuth2 flow configured.
 - Unit tests for domain rules, handlers and validators.
 - Everything configurable through environment variables.
+- React frontend with Keycloak PKCE authentication and inventory dashboard.
 
 ## Tech stack
 
@@ -51,6 +52,7 @@ Key characteristics:
 | Documentation | Swagger / OpenAPI with Swashbuckle |
 | Tests | xUnit, NSubstitute, Shouldly, coverlet |
 | Containers | Docker, Docker Compose |
+| Frontend | React, TypeScript, Vite, TanStack Query |
 
 ## Architecture
 
@@ -167,7 +169,7 @@ Seed data is inserted through the initial migration: three categories, three pro
 Requirements:
 
 - Docker Desktop with Docker Compose v2.
-- Ports `14330`, `8080` and `8081` available. Port `14330` is used on the host because a local SQL Server installation commonly owns `1433`.
+- Ports `14330`, `5173`, `8080` and `8081` available. Port `14330` is used on the host because a local SQL Server installation commonly owns `1433`.
 
 Steps:
 
@@ -192,6 +194,7 @@ Steps:
    | Health check | http://localhost:8081/health |
    | Keycloak | http://localhost:8080 |
    | SQL Server | localhost,14330 |
+   | Frontend | http://localhost:5173 |
 
 3. Wait for SQL Server and Keycloak to be ready. The API applies EF Core migrations on startup and retries for up to 30 seconds.
 
@@ -199,10 +202,12 @@ Steps:
 
    ```text
    Username: inventory-admin
-   Password: Admin123!
-   ```
+    Password: Admin123!
+    ```
 
-5. Stop the stack:
+5. Open the React frontend at `http://localhost:5173` and sign in with the same Keycloak user. The frontend uses the public `inventory-frontend` client with Authorization Code + PKCE.
+
+6. Stop the stack:
 
    ```bash
    docker compose down
