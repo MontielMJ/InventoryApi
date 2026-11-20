@@ -5,6 +5,7 @@ import { AuthProvider } from './auth/AuthProvider';
 import { useAuth } from './auth/useAuth';
 import { createApiClient } from './api/client';
 import { inventoryApi } from './api/inventoryApi';
+import GymMembers from './features/gym-members/GymMembers';
 import type { CategoryInput, MovementInput, ProductInput } from './types';
 import './styles.css';
 
@@ -18,7 +19,7 @@ function ProtectedRoute() {
 
 function Layout() {
   const auth = useAuth();
-  return <div className="app-shell"><aside className="sidebar"><div className="brand">Stock<span>Flow</span></div><nav><NavItem to="/" label="Dashboard" icon="⌂" /><NavItem to="/products" label="Products" icon="▣" /><NavItem to="/categories" label="Categories" icon="◈" /><NavItem to="/movements" label="Movements" icon="↕" /></nav><div className="sidebar-footer"><div className="user-badge">{(auth.username ?? 'U').slice(0, 1).toUpperCase()}</div><div className="user-name">{auth.username ?? 'User'}</div><button className="link-button" onClick={auth.logout}>Sign out</button></div></aside><main className="main-content"><header className="topbar"><div><span className="eyebrow">INVENTORY CONTROL</span><h1>Good afternoon</h1></div><div className="status-pill"><span /> System healthy</div></header><Outlet /></main></div>;
+  return <div className="app-shell"><aside className="sidebar"><div className="brand">Stock<span>Flow</span></div><nav><NavItem to="/" label="Dashboard" icon="⌂" /><NavItem to="/products" label="Products" icon="▣" /><NavItem to="/categories" label="Categories" icon="◈" /><NavItem to="/movements" label="Movements" icon="↕" /><NavItem to="/gym-members" label="Gym members" icon="◎" /></nav><div className="sidebar-footer"><div className="user-badge">{(auth.username ?? 'U').slice(0, 1).toUpperCase()}</div><div className="user-name">{auth.username ?? 'User'}</div><button className="link-button" onClick={auth.logout}>Sign out</button></div></aside><main className="main-content"><header className="topbar"><div><span className="eyebrow">INVENTORY CONTROL</span><h1>Good afternoon</h1></div><div className="status-pill"><span /> System healthy</div></header><Outlet /></main></div>;
 }
 
 function NavItem({ to, label, icon }: { to: string; label: string; icon: string }) {
@@ -95,4 +96,4 @@ function Loading() { return <div className="panel empty-state">Loading...</div>;
 function useStateValue<T>(initial: T): [T, (value: T) => void] { const [value, setValue] = useState(initial); return [value, setValue]; }
 function useInventoryApi() { const auth = useAuth(); return useMemo(() => inventoryApi(createApiClient(auth.getToken)), [auth.getToken]); }
 
-export default function App() { return <QueryClientProvider client={queryClient}><AuthProvider><BrowserRouter><Routes><Route path="/login" element={<Login />} /><Route element={<ProtectedRoute />}><Route element={<Layout />}><Route index element={<Dashboard />} /><Route path="products" element={<Products />} /><Route path="categories" element={<Categories />} /><Route path="movements" element={<Movements />} /></Route></Route><Route path="*" element={<Navigate to="/" replace />} /></Routes></BrowserRouter></AuthProvider></QueryClientProvider>; }
+export default function App() { return <QueryClientProvider client={queryClient}><AuthProvider><BrowserRouter><Routes><Route path="/login" element={<Login />} /><Route element={<ProtectedRoute />}><Route element={<Layout />}><Route index element={<Dashboard />} /><Route path="products" element={<Products />} /><Route path="categories" element={<Categories />} /><Route path="movements" element={<Movements />} /><Route path="gym-members" element={<GymMembers />} /></Route></Route><Route path="*" element={<Navigate to="/" replace />} /></Routes></BrowserRouter></AuthProvider></QueryClientProvider>; }

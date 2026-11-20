@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import type { Category, CategoryInput, Movement, MovementInput, PagedResult, Product, ProductInput } from '../types';
+import type { Category, CategoryInput, GymMember, GymMemberInput, GymMemberStatus, Movement, MovementInput, PagedResult, Product, ProductInput } from '../types';
 
 export function inventoryApi(client: AxiosInstance) {
   return {
@@ -18,6 +18,11 @@ export function inventoryApi(client: AxiosInstance) {
     movements: {
       list: () => client.get<PagedResult<Movement>>('/api/inventory-movements', { params: { pageSize: 100 } }).then(response => response.data),
       create: (input: MovementInput) => client.post<string>('/api/inventory-movements', input).then(response => response.data)
+    },
+    gymMembers: {
+      list: (status?: GymMemberStatus, search = '') => client.get<PagedResult<GymMember>>('/api/gym-members', { params: { status, search, pageSize: 100 } }).then(response => response.data),
+      create: (input: Omit<GymMemberInput, 'status'>) => client.post<string>('/api/gym-members', input).then(response => response.data),
+      update: (id: string, input: GymMemberInput) => client.put(`/api/gym-members/${id}`, { id, ...input })
     }
   };
 }
