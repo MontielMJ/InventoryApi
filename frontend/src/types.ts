@@ -1,4 +1,30 @@
 export type MovementType = 'In' | 'Out';
+export type GymMemberStatus = 'Active' | 'Inactive' | 'Cancelled';
+
+export interface GymMember {
+  id: string;
+  memberNumber: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  status: GymMemberStatus;
+  membershipStartDate: string;
+  membershipEndDate?: string;
+  cancellationReason?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GymMemberInput {
+  memberNumber: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  status: GymMemberStatus;
+  membershipStartDate: string;
+  membershipEndDate?: string;
+  cancellationReason?: string;
+}
 
 export interface Category {
   id: string;

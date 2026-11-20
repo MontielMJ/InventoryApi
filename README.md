@@ -339,6 +339,16 @@ curl -X POST "http://localhost:8081/api/inventory-movements" \
 
 If the requested quantity exceeds the current stock, the API returns `409 Conflict` with a `ProblemDetails` payload.
 
+### Gym members
+
+| Method | Route | Description | Success | Errors |
+|---|---|---|---|---|
+| GET | `/api/gym-members?status=&search=&page=&pageSize=` | Paged member list filtered by status or search text | 200 | 401 |
+| POST | `/api/gym-members` | Create an active gym member | 201 | 400, 401, 409 |
+| PUT | `/api/gym-members/{id}` | Update member details or status | 204 | 400, 401, 404, 409 |
+
+Member statuses are `Active`, `Inactive` and `Cancelled`. Cancelled members require a cancellation reason. The React dashboard exposes status counters and filters at `http://localhost:5173/gym-members`.
+
 ### Error format
 
 Errors use RFC 7807 `ProblemDetails`:
